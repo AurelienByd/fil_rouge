@@ -47,6 +47,10 @@ class Produit
     #[ORM\JoinColumn(referencedColumnName: 'nom_ss_rubrique', nullable: false)]
     private ?SousRubrique $nomSsRubrique = null;
 
+    #[ORM\ManyToOne(targetEntity: Fournisseur::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(referencedColumnName: 'ref_fournisseur_produit', nullable: false)]
+    private ?Fournisseur $refFournisseurProduit = null;
+
     // public function getId(): ?int
     // {
     //     return $this->id;
@@ -168,6 +172,18 @@ class Produit
     public function setNomSsRubrique(?SousRubrique $nomSsRubrique): static
     {
         $this->nomSsRubrique = $nomSsRubrique;
+
+        return $this;
+    }
+
+    public function getRefFournisseurProduit(): ?Fournisseur
+    {
+        return $this->refFournisseurProduit;
+    }
+
+    public function setRefFournisseurProduit(?Fournisseur $refFournisseurProduit): static
+    {
+        $this->refFournisseurProduit = $refFournisseurProduit;
 
         return $this;
     }
