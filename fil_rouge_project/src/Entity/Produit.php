@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use App\Entity\SousRubrique;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,6 +42,10 @@ class Produit
 
     #[ORM\Column]
     private ?bool $activeProduit = null;
+
+    #[ORM\ManyToOne(targetEntity: SousRubrique::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(referencedColumnName: 'nom_ss_rubrique', nullable: false)]
+    private ?SousRubrique $nomSsRubrique = null;
 
     // public function getId(): ?int
     // {
@@ -151,6 +156,18 @@ class Produit
     public function setActiveProduit(bool $activeProduit): static
     {
         $this->activeProduit = $activeProduit;
+
+        return $this;
+    }
+
+    public function getNomSsRubrique(): ?SousRubrique
+    {
+        return $this->nomSsRubrique;
+    }
+
+    public function setNomSsRubrique(?SousRubrique $nomSsRubrique): static
+    {
+        $this->nomSsRubrique = $nomSsRubrique;
 
         return $this;
     }
