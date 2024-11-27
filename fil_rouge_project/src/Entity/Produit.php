@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ProduitRepository;
 use App\Entity\SousRubrique;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,6 +52,17 @@ class Produit
     #[ORM\ManyToOne(targetEntity: Fournisseur::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_fournisseur_produit', nullable: false)]
     private ?Fournisseur $refFournisseurProduit = null;
+
+    /**
+     * @var Collection<int, Selectionne>
+     */
+    #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refProduit')]
+    private Collection $selectionnes;
+
+    public function __construct()
+    {
+        $this->selectionnes = new ArrayCollection();
+    }
 
     // public function getId(): ?int
     // {
@@ -184,6 +197,36 @@ class Produit
     public function setRefFournisseurProduit(?Fournisseur $refFournisseurProduit): static
     {
         $this->refFournisseurProduit = $refFournisseurProduit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Selectionne>
+     */
+    public function getSelectionnes(): Collection
+    {
+        return $this->selectionnes;
+    }
+
+    public function addSelectionne(Selectionne $selectionne): static
+    {
+        if (!$this->selectionnes->contains($selectionne)) {
+            $this->selectionnes->add($selectionne);
+            $selectionne->setRefProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSelectionne(Selectionne $selectionne): static
+    {
+        if ($this->selectionnes->removeElement($selectionne)) {
+            // set the owning side to null (unless already changed)
+            if ($selectionne->getRefProduit() === $this) {
+                $selectionne->setRefProduit(null);
+            }
+        }
 
         return $this;
     }

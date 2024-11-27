@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -57,6 +59,17 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Commercial::class, inversedBy: 'clients')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_commercial', nullable: false)]
     private ?Commercial $refCommercial = null;
+
+    /**
+     * @var Collection<int, Selectionne>
+     */
+    #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refClient')]
+    private Collection $selectionnes;
+
+    public function __construct()
+    {
+        $this->selectionnes = new ArrayCollection();
+    }
 
     // public function getId(): ?int
     // {
@@ -225,6 +238,36 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRefCommercial(?Commercial $refCommercial): static
     {
         $this->refCommercial = $refCommercial;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Selectionne>
+     */
+    public function getSelectionnes(): Collection
+    {
+        return $this->selectionnes;
+    }
+
+    public function addSelectionne(Selectionne $selectionne): static
+    {
+        if (!$this->selectionnes->contains($selectionne)) {
+            $this->selectionnes->add($selectionne);
+            $selectionne->setRefClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSelectionne(Selectionne $selectionne): static
+    {
+        if ($this->selectionnes->removeElement($selectionne)) {
+            // set the owning side to null (unless already changed)
+            if ($selectionne->getRefClient() === $this) {
+                $selectionne->setRefClient(null);
+            }
+        }
 
         return $this;
     }
