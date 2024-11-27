@@ -54,6 +54,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50)]
     private ?string $mdpClient = null;
 
+    #[ORM\ManyToOne(targetEntity: Commercial::class, inversedBy: 'clients')]
+    #[ORM\JoinColumn(referencedColumnName: 'ref_commercial', nullable: false)]
+    private ?Commercial $refCommercial = null;
+
     // public function getId(): ?int
     // {
     //     return $this->id;
@@ -211,5 +215,17 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getRefCommercial(): ?Commercial
+    {
+        return $this->refCommercial;
+    }
+
+    public function setRefCommercial(?Commercial $refCommercial): static
+    {
+        $this->refCommercial = $refCommercial;
+
+        return $this;
     }
 }
