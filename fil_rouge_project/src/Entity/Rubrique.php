@@ -18,13 +18,13 @@ class Rubrique
 
     #[ORM\Id]
     #[ORM\Column(length: 20)]
-    private ?string $nomRubrique = null;
+    protected ?string $nomRubrique = null;
 
     /**
      * @var Collection<int, SousRubrique>
      */
     #[ORM\OneToMany(targetEntity: SousRubrique::class, mappedBy: 'nomRubrique')]
-    private Collection $sousRubriques;
+    protected Collection $sousRubriques;
 
     public function __construct()
     {

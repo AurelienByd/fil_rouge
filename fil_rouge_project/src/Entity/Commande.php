@@ -16,37 +16,37 @@ class Commande
 
     #[ORM\Id]
     #[ORM\Column]
-    private ?int $numCommande = null;
+    protected ?int $numCommande = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateCommande = null;
+    protected ?\DateTimeInterface $dateCommande = null;
 
     #[ORM\Column]
-    private ?int $nbExpedCommande = null;
+    protected ?int $nbExpedCommande = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $totalHT = null;
+    protected ?string $totalHT = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $taxeTVA = null;
+    protected ?string $taxeTVA = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $totalTTC = null;
+    protected ?string $totalTTC = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $totalCommande = null;
+    protected ?string $totalCommande = null;
 
     #[ORM\Column]
-    private ?int $delaiPaiement = null;
+    protected ?int $delaiPaiement = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $modePaiement = null;
+    protected ?string $modePaiement = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?string $penaliteRetard = null;
+    protected ?string $penaliteRetard = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $tempsConservDocs = null;
+    protected ?\DateTimeInterface $tempsConservDocs = null;
 
     // public function getId(): ?int
     // {

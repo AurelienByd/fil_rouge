@@ -17,16 +17,16 @@ class Commercial
 
     #[ORM\Id]
     #[ORM\Column(length: 5)]
-    private ?string $refCommercial = null;
+    protected ?string $refCommercial = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nomCommercial = null;
+    protected ?string $nomCommercial = null;
 
     /**
      * @var Collection<int, Client>
      */
     #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'refCommercial')]
-    private Collection $clients;
+    protected Collection $clients;
 
     public function __construct()
     {

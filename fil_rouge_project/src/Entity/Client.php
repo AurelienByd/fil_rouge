@@ -21,50 +21,50 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\Column(length: 20, unique: true)]
-    private ?string $refClient = null;
+    protected ?string $refClient = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nomClient = null;
+    protected ?string $nomClient = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $adresseLivraisonClient = null;
+    protected ?string $adresseLivraisonClient = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $adresseFacturationClient = null;
+    protected ?string $adresseFacturationClient = null;
 
     #[ORM\Column(length: 50, unique: true)]
-    private ?string $contactClient = null;
+    protected ?string $contactClient = null;
 
     #[ORM\Column]
-    private ?int $coeffClient = null;
+    protected ?int $coeffClient = null;
 
     /**
      * @var list<string> The user category
      */
     #[ORM\Column]
-    private array $catClient = [];
+    protected array $catClient = [];
     /**
      * @var string The hashed password
      */
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateInscrClient = null;
+    protected ?\DateTimeInterface $dateInscrClient = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $reducPourClient = null;
+    protected ?string $reducPourClient = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $mdpClient = null;
+    protected ?string $mdpClient = null;
 
     #[ORM\ManyToOne(targetEntity: Commercial::class, inversedBy: 'clients')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_commercial', nullable: false)]
-    private ?Commercial $refCommercial = null;
+    protected ?Commercial $refCommercial = null;
 
     /**
      * @var Collection<int, Selectionne>
      */
     #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refClient')]
-    private Collection $selectionnes;
+    protected Collection $selectionnes;
 
     public function __construct()
     {

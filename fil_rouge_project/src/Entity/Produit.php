@@ -19,45 +19,45 @@ class Produit
 
     #[ORM\Id]
     #[ORM\Column(length: 5)]
-    private ?string $refProduit = null;
+    protected ?string $refProduit = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $nomProduit = null;
+    protected ?string $nomProduit = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $descrProduit = null;
+    protected ?string $descrProduit = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $prixAchatProduit = null;
+    protected ?string $prixAchatProduit = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $photoProduit = null;
+    protected ?string $photoProduit = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    private ?string $prixVenteProduitHT = null;
+    protected ?string $prixVenteProduitHT = null;
 
     #[ORM\Column]
-    private ?int $stockProduit = null;
+    protected ?int $stockProduit = null;
 
     #[ORM\Column]
-    private ?bool $valideProduit = null;
+    protected ?bool $valideProduit = null;
 
     #[ORM\Column]
-    private ?bool $activeProduit = null;
+    protected ?bool $activeProduit = null;
 
     #[ORM\ManyToOne(targetEntity: SousRubrique::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(referencedColumnName: 'nom_ss_rubrique', nullable: false)]
-    private ?SousRubrique $nomSsRubrique = null;
+    protected ?SousRubrique $nomSsRubrique = null;
 
     #[ORM\ManyToOne(targetEntity: Fournisseur::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_fournisseur_produit', nullable: false)]
-    private ?Fournisseur $refFournisseurProduit = null;
+    protected ?Fournisseur $refFournisseurProduit = null;
 
     /**
      * @var Collection<int, Selectionne>
      */
     #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refProduit')]
-    private Collection $selectionnes;
+    protected Collection $selectionnes;
 
     public function __construct()
     {

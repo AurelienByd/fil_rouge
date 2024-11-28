@@ -18,17 +18,17 @@ class SousRubrique
 
     #[ORM\Id]
     #[ORM\Column(length: 20)]
-    private ?string $nomSsRubrique = null;
+    protected ?string $nomSsRubrique = null;
 
     #[ORM\ManyToOne(targetEntity: Rubrique::class, inversedBy: 'sousRubriques')]
     #[ORM\JoinColumn(referencedColumnName: 'nom_rubrique', nullable: false)]
-    private ?Rubrique $nomRubrique = null;
+    protected ?Rubrique $nomRubrique = null;
 
     /**
      * @var Collection<int, Produit>
      */
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'nomSsRubrique')]
-    private Collection $produits;
+    protected Collection $produits;
 
     public function __construct()
     {

@@ -16,12 +16,12 @@ class Selectionne
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'selectionnes')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_produit', nullable: false)]
-    private ?Produit $refProduit = null;
+    protected ?Produit $refProduit = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'selectionnes')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_client', nullable: false)]
-    private ?Client $refClient = null;
+    protected ?Client $refClient = null;
 
     // public function getId(): ?int
     // {

@@ -17,19 +17,19 @@ class Fournisseur
 
     #[ORM\Id]
     #[ORM\Column(length: 20)]
-    private ?string $refFournisseurProduit = null;
+    protected ?string $refFournisseurProduit = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nomFournisseur = null;
+    protected ?string $nomFournisseur = null;
 
     #[ORM\Column(length: 15)]
-    private ?string $typeFournisseur = null;
+    protected ?string $typeFournisseur = null;
 
     /**
      * @var Collection<int, Produit>
      */
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'refFournisseurProduit')]
-    private Collection $produits;
+    protected Collection $produits;
 
     public function __construct()
     {
