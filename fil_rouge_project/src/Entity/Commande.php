@@ -48,6 +48,10 @@ class Commande
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     protected ?\DateTimeInterface $tempsConservDocs = null;
 
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
+    #[ORM\JoinColumn(referencedColumnName: 'ref_client', nullable: false)]
+    protected ?Client $refClient = null;
+
     // public function getId(): ?int
     // {
     //     return $this->id;
@@ -181,6 +185,18 @@ class Commande
     public function setTempsConservDocs(\DateTimeInterface $tempsConservDocs): static
     {
         $this->tempsConservDocs = $tempsConservDocs;
+
+        return $this;
+    }
+
+    public function getRefClient(): ?Client
+    {
+        return $this->refClient;
+    }
+
+    public function setRefClient(?Client $refClient): static
+    {
+        $this->refClient = $refClient;
 
         return $this;
     }
