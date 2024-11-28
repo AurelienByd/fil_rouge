@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -51,6 +53,17 @@ class Commande
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(referencedColumnName: 'ref_client', nullable: false)]
     protected ?Client $refClient = null;
+
+    /**
+     * @var Collection<int, Envoie>
+     */
+    #[ORM\OneToMany(targetEntity: Envoie::class, mappedBy: 'numCommande')]
+    protected Collection $envoies;
+
+    public function __construct()
+    {
+        $this->envoies = new ArrayCollection();
+    }
 
     // public function getId(): ?int
     // {
@@ -197,6 +210,36 @@ class Commande
     public function setRefClient(?Client $refClient): static
     {
         $this->refClient = $refClient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Envoie>
+     */
+    public function getEnvoies(): Collection
+    {
+        return $this->envoies;
+    }
+
+    public function addEnvoie(Envoie $envoie): static
+    {
+        if (!$this->envoies->contains($envoie)) {
+            $this->envoies->add($envoie);
+            $envoie->setNumCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnvoie(Envoie $envoie): static
+    {
+        if ($this->envoies->removeElement($envoie)) {
+            // set the owning side to null (unless already changed)
+            if ($envoie->getNumCommande() === $this) {
+                $envoie->setNumCommande(null);
+            }
+        }
 
         return $this;
     }

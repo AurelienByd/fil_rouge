@@ -59,9 +59,16 @@ class Produit
     #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refProduit')]
     protected Collection $selectionnes;
 
+    /**
+     * @var Collection<int, Envoie>
+     */
+    #[ORM\OneToMany(targetEntity: Envoie::class, mappedBy: 'refProduit')]
+    protected Collection $envoies;
+
     public function __construct()
     {
         $this->selectionnes = new ArrayCollection();
+        $this->envoies = new ArrayCollection();
     }
 
     // public function getId(): ?int
@@ -225,6 +232,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($selectionne->getRefProduit() === $this) {
                 $selectionne->setRefProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Envoie>
+     */
+    public function getEnvoies(): Collection
+    {
+        return $this->envoies;
+    }
+
+    public function addEnvoie(Envoie $envoie): static
+    {
+        if (!$this->envoies->contains($envoie)) {
+            $this->envoies->add($envoie);
+            $envoie->setRefProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnvoie(Envoie $envoie): static
+    {
+        if ($this->envoies->removeElement($envoie)) {
+            // set the owning side to null (unless already changed)
+            if ($envoie->getRefProduit() === $this) {
+                $envoie->setRefProduit(null);
             }
         }
 
