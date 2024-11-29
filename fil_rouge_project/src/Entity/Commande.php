@@ -60,9 +60,16 @@ class Commande
     #[ORM\OneToMany(targetEntity: Envoie::class, mappedBy: 'numCommande')]
     protected Collection $envoies;
 
+    /**
+     * @var Collection<int, BonDeLivraison>
+     */
+    #[ORM\OneToMany(targetEntity: BonDeLivraison::class, mappedBy: 'numCommande')]
+    protected Collection $bonDeLivraisons;
+
     public function __construct()
     {
         $this->envoies = new ArrayCollection();
+        $this->bonDeLivraisons = new ArrayCollection();
     }
 
     // public function getId(): ?int
@@ -238,6 +245,36 @@ class Commande
             // set the owning side to null (unless already changed)
             if ($envoie->getNumCommande() === $this) {
                 $envoie->setNumCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BonDeLivraison>
+     */
+    public function getBonDeLivraisons(): Collection
+    {
+        return $this->bonDeLivraisons;
+    }
+
+    public function addBonDeLivraison(BonDeLivraison $bonDeLivraison): static
+    {
+        if (!$this->bonDeLivraisons->contains($bonDeLivraison)) {
+            $this->bonDeLivraisons->add($bonDeLivraison);
+            $bonDeLivraison->setNumCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBonDeLivraison(BonDeLivraison $bonDeLivraison): static
+    {
+        if ($this->bonDeLivraisons->removeElement($bonDeLivraison)) {
+            // set the owning side to null (unless already changed)
+            if ($bonDeLivraison->getNumCommande() === $this) {
+                $bonDeLivraison->setNumCommande(null);
             }
         }
 
