@@ -66,6 +66,9 @@ class Commande
     #[ORM\OneToMany(targetEntity: BonDeLivraison::class, mappedBy: 'numCommande')]
     protected Collection $bonDeLivraisons;
 
+    #[ORM\OneToOne(mappedBy: 'numCommande', cascade: ['persist', 'remove'])]
+    protected ?Facture $facture = null;
+
     public function __construct()
     {
         $this->envoies = new ArrayCollection();
@@ -277,6 +280,23 @@ class Commande
                 $bonDeLivraison->setNumCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFacture(): ?Facture
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(Facture $facture): static
+    {
+        // set the owning side of the relation if necessary
+        if ($facture->getNumCommande() !== $this) {
+            $facture->setNumCommande($this);
+        }
+
+        $this->facture = $facture;
 
         return $this;
     }
