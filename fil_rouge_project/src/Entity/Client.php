@@ -14,12 +14,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER', fields: ['refClient', 'contactClient'])]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\Column(length: 20, unique: true)]
     protected ?string $refClient = null;
 
@@ -56,32 +55,28 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50)]
     protected ?string $mdpClient = null;
 
-    #[ORM\ManyToOne(targetEntity: Commercial::class, inversedBy: 'clients')]
-    #[ORM\JoinColumn(referencedColumnName: 'ref_commercial', nullable: false)]
-    protected ?Commercial $refCommercial = null;
-
     /**
      * @var Collection<int, Selectionne>
      */
-    #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'refClient')]
+    #[ORM\OneToMany(targetEntity: Selectionne::class, mappedBy: 'client')]
     protected Collection $selectionnes;
-
-    /**
-     * @var Collection<int, Commande>
-     */
-    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'refClient')]
-    protected Collection $commandes;
 
     public function __construct()
     {
         $this->selectionnes = new ArrayCollection();
-        $this->commandes = new ArrayCollection();
     }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getRefClient(): ?string
     {
@@ -237,18 +232,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getRefCommercial(): ?Commercial
-    {
-        return $this->refCommercial;
-    }
-
-    public function setRefCommercial(?Commercial $refCommercial): static
-    {
-        $this->refCommercial = $refCommercial;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Selectionne>
      */
@@ -261,7 +244,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->selectionnes->contains($selectionne)) {
             $this->selectionnes->add($selectionne);
-            $selectionne->setRefClient($this);
+            $selectionne->setClient($this);
         }
 
         return $this;
@@ -271,38 +254,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->selectionnes->removeElement($selectionne)) {
             // set the owning side to null (unless already changed)
-            if ($selectionne->getRefClient() === $this) {
-                $selectionne->setRefClient(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
-
-    public function addCommande(Commande $commande): static
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes->add($commande);
-            $commande->setRefClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): static
-    {
-        if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
-            if ($commande->getRefClient() === $this) {
-                $commande->setRefClient(null);
+            if ($selectionne->getClient() === $this) {
+                $selectionne->setClient(null);
             }
         }
 

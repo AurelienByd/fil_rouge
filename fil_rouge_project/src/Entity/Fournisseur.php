@@ -10,12 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FournisseurRepository::class)]
 class Fournisseur
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\Column(length: 20)]
     protected ?string $refFournisseurProduit = null;
 
@@ -25,21 +24,17 @@ class Fournisseur
     #[ORM\Column(length: 15)]
     protected ?string $typeFournisseur = null;
 
-    /**
-     * @var Collection<int, Produit>
-     */
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'refFournisseurProduit')]
-    protected Collection $produits;
-
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->produits = new ArrayCollection();
+        return $this->id;
     }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getRefFournisseurProduit(): ?string
     {
@@ -73,36 +68,6 @@ class Fournisseur
     public function setTypeFournisseur(string $typeFournisseur): static
     {
         $this->typeFournisseur = $typeFournisseur;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
-    public function addProduit(Produit $produit): static
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->setRefFournisseurProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): static
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getRefFournisseurProduit() === $this) {
-                $produit->setRefFournisseurProduit(null);
-            }
-        }
 
         return $this;
     }

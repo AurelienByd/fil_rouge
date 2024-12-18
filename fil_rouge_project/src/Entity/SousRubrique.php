@@ -11,34 +11,29 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SousRubriqueRepository::class)]
 class SousRubrique
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\Column(length: 20)]
     protected ?string $nomSsRubrique = null;
 
-    #[ORM\ManyToOne(targetEntity: Rubrique::class, inversedBy: 'sousRubriques')]
-    #[ORM\JoinColumn(referencedColumnName: 'nom_rubrique', nullable: false)]
-    protected ?Rubrique $nomRubrique = null;
+    #[ORM\ManyToOne(inversedBy: 'sousRubriques')]
+    #[ORM\JoinColumn(nullable: false)]
+    protected ?Rubrique $rubrique = null;
 
-    /**
-     * @var Collection<int, Produit>
-     */
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'nomSsRubrique')]
-    protected Collection $produits;
-
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->produits = new ArrayCollection();
+        return $this->id;
     }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getNomSsRubrique(): ?string
     {
@@ -52,44 +47,14 @@ class SousRubrique
         return $this;
     }
 
-    public function getNomRubrique(): ?Rubrique
+    public function getRubrique(): ?Rubrique
     {
-        return $this->nomRubrique;
+        return $this->rubrique;
     }
 
-    public function setNomRubrique(?Rubrique $nomRubrique): static
+    public function setRubrique(?Rubrique $rubrique): static
     {
-        $this->nomRubrique = $nomRubrique;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
-    public function addProduit(Produit $produit): static
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->setNomSsRubrique($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): static
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getNomSsRubrique() === $this) {
-                $produit->setNomSsRubrique(null);
-            }
-        }
+        $this->rubrique = $rubrique;
 
         return $this;
     }

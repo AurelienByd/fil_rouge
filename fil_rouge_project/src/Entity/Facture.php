@@ -9,26 +9,28 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
 class Facture
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\Column]
     protected ?int $numFacture = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     protected ?\DateTimeInterface $dateFacture = null;
 
-    #[ORM\OneToOne(targetEntity: Commande::class, inversedBy: 'facture', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(referencedColumnName: 'num_commande', nullable: false)]
-    protected ?Commande $numCommande = null;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getNumFacture(): ?int
     {
@@ -50,18 +52,6 @@ class Facture
     public function setDateFacture(\DateTimeInterface $dateFacture): static
     {
         $this->dateFacture = $dateFacture;
-
-        return $this;
-    }
-
-    public function getNumCommande(): ?Commande
-    {
-        return $this->numCommande;
-    }
-
-    public function setNumCommande(Commande $numCommande): static
-    {
-        $this->numCommande = $numCommande;
 
         return $this;
     }

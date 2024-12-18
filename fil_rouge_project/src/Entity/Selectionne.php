@@ -8,46 +8,35 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SelectionneRepository::class)]
 class Selectionne
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'selectionnes')]
-    #[ORM\JoinColumn(referencedColumnName: 'ref_produit', nullable: false)]
-    protected ?Produit $refProduit = null;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'selectionnes')]
-    #[ORM\JoinColumn(referencedColumnName: 'ref_client', nullable: false)]
-    protected ?Client $refClient = null;
+    #[ORM\ManyToOne(inversedBy: 'selectionnes')]
+    #[ORM\JoinColumn(nullable: false)]
+    protected ?Client $client = null;
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
-
-    public function getRefProduit(): ?Produit
+    public function getId(): ?int
     {
-        return $this->refProduit;
+        return $this->id;
     }
 
-    public function setRefProduit(?Produit $refProduit): static
+    public function setId(int $id): static
     {
-        $this->refProduit = $refProduit;
+        $this->id = $id;
 
         return $this;
     }
 
-    public function getRefClient(): ?Client
+    public function getClient(): ?Client
     {
-        return $this->refClient;
+        return $this->client;
     }
 
-    public function setRefClient(?Client $refClient): static
+    public function setClient(?Client $client): static
     {
-        $this->refClient = $refClient;
+        $this->client = $client;
 
         return $this;
     }

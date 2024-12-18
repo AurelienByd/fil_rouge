@@ -9,26 +9,28 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: BonDeLivraisonRepository::class)]
 class BonDeLivraison
 {
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column]
-    // private ?int $id = null;
-
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\Column]
     protected ?int $numBonLivraison = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     protected ?\DateTimeInterface $dateBonLivraison = null;
 
-    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'bonDeLivraisons')]
-    #[ORM\JoinColumn(referencedColumnName: 'num_commande', nullable: false)]
-    protected ?Commande $numCommande = null;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getNumBonLivraison(): ?int
     {
@@ -50,18 +52,6 @@ class BonDeLivraison
     public function setDateBonLivraison(\DateTimeInterface $dateBonLivraison): static
     {
         $this->dateBonLivraison = $dateBonLivraison;
-
-        return $this;
-    }
-
-    public function getNumCommande(): ?Commande
-    {
-        return $this->numCommande;
-    }
-
-    public function setNumCommande(?Commande $numCommande): static
-    {
-        $this->numCommande = $numCommande;
 
         return $this;
     }
